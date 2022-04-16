@@ -28,7 +28,7 @@ steps:
   displayName: Test
   inputs:
     command: test
-    projects: '**/**/ClientSamples.netcore.csproj'
+    projects: '**/**/ClientSamples.csproj'
     arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
 
 - task: PublishCodeCoverageResults@1
