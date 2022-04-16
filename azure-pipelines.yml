@@ -19,3 +19,14 @@ steps:
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+# Publish code coverage results
+# Publish Cobertura or JaCoCo code coverage results from a build
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'JaCoCo' # Available options: 'JaCoCo', 'Cobertura'
+    summaryFileLocation: 
+    #pathToSources: # Optional
+    #reportDirectory: # Optional
+    #additionalCodeCoverageFiles: # Optional
+    #failIfCoverageEmpty: false # Optional
