@@ -2,7 +2,7 @@
 #- main
 
 pool:
-  vmImage: 'windows-latest'
+  Name: My agent pool
 
 variables:
   solution: './ClientLibrary/Samples/ClientSamples.netcore.sln'
@@ -22,15 +22,21 @@ steps:
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+# You just added coverlet.collector to use 'XPlat Code Coverage'
 - task: DotNetCoreCLI@2
-  displayName: 'Run tests'
+  displayName: Test
   inputs:
-    command: 'test'
-    projects: './ClientLibrary/Samples/ClientSamples.netcore.csproj'
-    publishTestResults: true
-    arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
+
 - task: PublishCodeCoverageResults@1
-  displayName: 'Publish code coverage results'
+  displayName: 'Publish code coverage'
   inputs:
-    codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '**/*coverage.cobertura.xml'
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+
+#    projects: './ClientLibrary/Samples/ClientSamples.netcore.csproj'
+#    publishTestResults: true
+#    arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
