@@ -24,8 +24,8 @@ steps:
 # Publish Cobertura or JaCoCo code coverage results from a build
 - task: PublishCodeCoverageResults@1
   inputs:
-    codeCoverageTool: 'JaCoCo' # Available options: 'JaCoCo', 'Cobertura'
-    summaryFileLocation: 
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '**/*coverage.cobertura.xml'
     #pathToSources: # Optional
     #reportDirectory: # Optional
     #additionalCodeCoverageFiles: # Optional
