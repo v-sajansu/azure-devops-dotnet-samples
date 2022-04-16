@@ -1,11 +1,11 @@
-trigger:
-- master
+#trigger:
+#- main
 
 pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  solution: './ClientLibrary/Samples/ClientSamples.netcore.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -18,7 +18,7 @@ steps:
   displayName: 'Run tests'
   inputs:
     command: 'test'
-    projects: '**/*[Tt]est*/*.csproj'
+    projects: './ClientLibrary/Samples/ClientSamples.netcore.csproj'
     publishTestResults: true
     arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
 - task: PublishCodeCoverageResults@1
