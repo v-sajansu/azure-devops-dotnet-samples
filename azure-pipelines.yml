@@ -1,35 +1,26 @@
+trigger:
+- master
+
 pool:
-  Name: My agent pool
+  vmImage: 'windows-latest'
 
 variables:
-  solution: './ClientLibrary/Samples/ClientSamples.sln'
+  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@0
-
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
+  displayName: 'Build'
   inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-##Code Coverage
-
+    command: 'build'
 - task: DotNetCoreCLI@2
   displayName: 'Run tests'
   inputs:
     command: 'test'
-    projects: '**/**/*.csproj'
+    projects: '**/*[Tt]est*/*.csproj'
     publishTestResults: true
     arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
-
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage results'
   inputs:
